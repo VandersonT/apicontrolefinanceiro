@@ -17,5 +17,6 @@ Route::post('/editUser', [UserController::class, 'editUser']);
 
 /*------------------------------Transactions---------------------------------*/
 Route::get('/userTransactions/{id}', [TransactionController::class, 'getUserTransactions']);
-Route::get('/newTransition/{id}', [TransactionController::class, 'sendNewTransition']);
+Route::get('/getUserFinancialInfo/{id}', [TransactionController::class, 'getUserFinancialInfo']);
+Route::post('/newTransition', [TransactionController::class, 'sendNewTransition']);
 /*----------------------------------------------------------------------------*/
