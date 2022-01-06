@@ -1,0 +1,56 @@
+Nota: Com a Api integrada corretamente, saiba que em todas as requisições irá retornar o campo error, se ocorrer tudo certo ele virá vazio e virá outros campos com as informações desejadas, caso contrario só ele virá e estará preenchido com o erro ocorrido.
+
+
+Base url: http://127.0.0.1:8000/api/
+
+/*---------------------------------------------USER---------------------------------------------*/
+    /auth:[
+        method: POST
+        Espera Receber: Token
+        Retorno: Retona "isUserLoggedIn: true/false", se true retorna os dados do usuario também.
+    ]
+
+    /newUser:[
+        method: POST
+        Espera Receber: nome, email, pass e confirmPass
+        Retorno: Retona o campo success com o token OU o campo error preenchido, depende do ocorrido.
+    ]
+
+    /login:[
+        method: POST
+        Espera Receber: email E password
+        Retorno: Retorna o token caso ocorra tudo certo OU o campo error preenchido se houver algum erro.
+    ]
+
+    /editUser:[
+        method: PUT
+        Espera Receber: id E nome E/OU email E/OU (newPass COM oldPass) E/OU avatar
+        Retorno: Retorna success e o campo error vazio se der certo ou somente o campo erro com o erro obtido.
+    ]
+/*------------------------------------------------------------------------------------------------*/
+
+/*-----------------------------------------TRANSACTIONS-------------------------------------------*/
+    /userTransactions/{id}:[
+        method: GET
+        Espera Receber: id
+        Retorno: Retorna o valor liquido total e o valor total guardado para emergencia.
+    ]
+
+    /getUserFinancialInfo/{id}:[
+        method: GET
+        Espera Receber: id
+        Retorno: Retorna todas as transações feitas pelo usuário.
+    ]
+
+    /newTransition:[
+        method: POST
+        Espera Receber: userId, total, description, date E (takenFrom se negativo o valor total OU netValue E savedValue se positivo)
+        Retorno: Retorna o campo error preenchido se ocorrer algum erro ou o campo success se der tudo certo.
+    ]
+
+    /deleteTransition/{id}:[
+        method: DELETE
+        Espera Receber: id
+        Retorno: Retornará nada especial, achando o id ou não, removendo algo ou não, retornará somente o campo error vazio independente do que ocorra.
+    ]
+/*------------------------------------------------------------------------------------------------*/
