@@ -97,4 +97,13 @@ class TransactionController extends Controller{
         return $array;
     }
 
+    public function deleteTransition(Request $request){
+        $array = ['error' => ''];
+
+        $transitionToRemove = Transaction::find($request->id);
+        $transitionToRemove->delete();
+
+        return $array;
+    }
+
 }

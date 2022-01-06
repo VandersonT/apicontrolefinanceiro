@@ -19,4 +19,5 @@ Route::post('/editUser', [UserController::class, 'editUser']);
 Route::get('/userTransactions/{id}', [TransactionController::class, 'getUserTransactions']);
 Route::get('/getUserFinancialInfo/{id}', [TransactionController::class, 'getUserFinancialInfo']);
 Route::post('/newTransition', [TransactionController::class, 'sendNewTransition']);
+Route::delete('/deleteTransition/{id}', [TransactionController::class, 'deleteTransition']);
 /*----------------------------------------------------------------------------*/
