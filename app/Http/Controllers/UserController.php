@@ -60,6 +60,13 @@ class UserController extends Controller{
             return $array;
         }
 
+        $emailInUse = User::where('email', $email)->first();
+
+        if($emailInUse){
+            $array['error'] = 'Este email já está registrado, faça o login.';
+            return $array;
+        }
+
         if($pass != $confirmPass){
             $array['error'] = 'As senhas não coincidem, favor verificar novamente.';
             return $array;
