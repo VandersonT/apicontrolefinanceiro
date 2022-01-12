@@ -12,12 +12,13 @@ Route::post('/auth', [UserController::class, 'userAuthenticate']);
 Route::post('/newUser', [UserController::class, 'regiterNewUser']);
 Route::get('/confirmAccount/{id}', [UserController::class, 'confirmAccount']);
 Route::post('/login', [UserController::class, 'loginAction']);
-Route::post('/editUser', [UserController::class, 'editUser']);
+Route::put('/editUser', [UserController::class, 'editUser']);
+Route::post('/editUserAvatar/{id}', [UserController::class, 'editUserAvatar']);
 /*----------------------------------------------------------------------------*/
 
 /*------------------------------Transactions---------------------------------*/
 Route::get('/userTransactions/{id}', [TransactionController::class, 'getUserTransactions']);
 Route::get('/getUserFinancialInfo/{id}', [TransactionController::class, 'getUserFinancialInfo']);
-Route::post('/newTransition', [TransactionController::class, 'sendNewTransition']);
+Route::post('/newTransaction', [TransactionController::class, 'sendNewTransition']);
 Route::delete('/deleteTransition/{id}', [TransactionController::class, 'deleteTransition']);
 /*----------------------------------------------------------------------------*/

@@ -10,21 +10,23 @@ use App\Models\Transaction;
 
 class TransactionController extends Controller{
     
-    public function getUserFinancialInfo(Request $request){
+    public function getUserTransactions(Request $request){
         $array = ['error' => ''];
 
         $transactions = Transaction::
             where('userId', $request->id)
-        ->simplePaginate(20);
+            ->orderBy('id', 'DESC')
+        ->simplePaginate(2);
 
         $array['transactions'] = $transactions;
         return $array;
     }
     
-    public function getUserTransactions(Request $request){
+    public function getUserFinancialInfo(Request $request){
         $array = ['error' => ''];
         $SavedValue = 0;
         $netValue = 0;
+        $totalTransitions = Transaction::where('userId', $request->id)->count();
 
         $transactions = Transaction::where('userId', $request->id)->get();
 
@@ -44,6 +46,7 @@ class TransactionController extends Controller{
 
         $array['netValueTotal'] = $netValue;
         $array['saveValueTotal'] = $SavedValue;
+        $array['totalTransitions'] = $totalTransitions;
 
         return $array;
     }
@@ -59,19 +62,19 @@ class TransactionController extends Controller{
         $savedValue = filter_var($request->savedValue, FILTER_SANITIZE_STRING);
         $netValue = filter_var($request->netValue, FILTER_SANITIZE_STRING);
 
+
         if(!$userId || !$total || !$description || !$date){
             $array['error'] = 'Esta faltando algun(s) campo(s) obrigatório(s), confira e tente novamente.';
-            return $array;
-        }
-
-        if($total >= 0 && (!$savedValue || !$netValue)){
-            $array['error'] = 'Para depositar você precisa informar o valor a ser salvo para urgencia e o valor liquido.';
             return $array;
         }
 
         if($total < 0 && !$takenFrom){
             $array['error'] = 'Para retirar um valor informe de onde irá tira-lo, se do valor [disponivel] ou [Emergencial]';
             return $array;
+        }
+
+        if(!$netValue){
+            $netValue = $total - $savedValue;
         }
 
         if($total >= 0){

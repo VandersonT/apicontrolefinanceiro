@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->integer('access');
             $table->string('token');
             $table->string('avatar');
+            $table->string('theme')->default('default');
         });
     }
 

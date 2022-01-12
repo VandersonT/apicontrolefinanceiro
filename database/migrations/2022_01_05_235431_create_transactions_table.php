@@ -16,9 +16,9 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('userId');
-            $table->float('netValue');
-            $table->float('savedValue');
-            $table->float('total');
+            $table->double('netValue', 100,2);
+            $table->double('savedValue', 100,2);
+            $table->double('total', 100,2);
             $table->string('description');
             $table->string('date');
             $table->string('takenFrom');

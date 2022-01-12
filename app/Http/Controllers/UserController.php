@@ -28,11 +28,12 @@ class UserController extends Controller{
         }
 
         $getFilteredInformation = [
-            'userId' => $userFound['id'],
+            'id' => $userFound['id'],
             'name' => $userFound['name'],
             'email' => $userFound['email'],
             'access' => $userFound['access'],
-            'avatar' => $userFound['avatar']
+            'avatar' => $userFound['avatar'],
+            'theme' => $userFound['theme']
         ];
 
         $array['loggedUser'] = $getFilteredInformation;
@@ -73,7 +74,7 @@ class UserController extends Controller{
             $registerUser->access = 0;
             $registerUser->password = $hash;
             $registerUser->token = $token;
-            $registerUser->avatar = 'no-picture.jpg';
+            $registerUser->avatar = 'http://127.0.0.1:8000/media/no-picture.png';
         $registerUser->save();
 
         //Envia o email ao usuário com o link para a rota /confirmAccount passando $registerUser->id como parametro
@@ -130,8 +131,10 @@ class UserController extends Controller{
         $userId =  $request->id;
         $name = filter_var($request->name, FILTER_SANITIZE_STRING);
         $email = $request->email;
+        $theme = filter_var($request->theme, FILTER_SANITIZE_STRING);
         $oldPass = filter_var($request->oldPass, FILTER_SANITIZE_STRING);
         $newPass = filter_var($request->newPass, FILTER_SANITIZE_STRING);
+        $avatarUpdated = filter_var($request->avatarUpdated, FILTER_SANITIZE_STRING);
         $changedSomething = false;
         
 
@@ -162,6 +165,12 @@ class UserController extends Controller{
 
                 $user->email = $email;
                 $changedSomething = true;
+                $user->access = 0;
+            }
+
+            if($theme){
+                $user->theme = $theme;
+                $changedSomething = true;
             }
 
             if($newPass){
@@ -169,15 +178,15 @@ class UserController extends Controller{
                     $array['error'] = 'Para trocar de senha precisa enviar a antiga também.';
                     return $array;
                 }
+
+                //verifica se a senha está correta
+                if(!password_verify($oldPass, $user['password'])){
+                    $array['error'] = 'A senha enviada está errada!';
+                    return $array;
+                }
+
                 $hash = password_hash($newPass, PASSWORD_DEFAULT);
                 $user->password = $hash;
-                $changedSomething = true;
-            }
-
-            if($request->hasFile('file')){
-                $pathName = md5(time().rand(0,1000)).'.jpg';
-                move_uploaded_file($_FILES['file']['tmp_name'], 'media/'.$pathName);
-                $user->avatar = url('/media').'/'.$pathName;
                 $changedSomething = true;
             }
 
@@ -189,6 +198,23 @@ class UserController extends Controller{
         $user->save();
         
         $array['success'] = 'Seu perfil foi editado com sucesso.';
+
+        return $array;
+    }
+
+    public function editUserAvatar(Request $request){
+        $array = ['error' => ''];
+        
+        if($request->hasFile('file')){
+            
+            $pathName = md5(time().rand(0,1000)).'.jpg';
+            move_uploaded_file($_FILES['file']['tmp_name'], 'media/'.$pathName);
+
+            $user = User::find($request->id);
+                $user->avatar = url('/media').'/'.$pathName;
+            $user->save();
+
+        }
 
         return $array;
     }

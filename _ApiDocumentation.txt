@@ -18,14 +18,20 @@ Base url: http://127.0.0.1:8000/api/
 
     /login:[
         method: POST
-        Espera Receber: email E password
+        Espera Receber: email E pass
         Retorno: Retorna o token caso ocorra tudo certo OU o campo error preenchido se houver algum erro.
     ]
 
     /editUser:[
         method: PUT
-        Espera Receber: id E nome E/OU email E/OU (newPass COM oldPass) E/OU avatar
+        Espera Receber: id E nome E/OU email E/OU (newPass COM oldPass) OU avatarUpdated informando se o avatar foi atualizado em outra requisição para ele não dar a requisição como nada mudado
         Retorno: Retorna success e o campo error vazio se der certo ou somente o campo erro com o erro obtido.
+    ]
+
+    /editUserAvatar:[
+        method: POST
+        Espera Receber: o id do usuário por parametro e no corpo um arquivo com nome 'file'
+        Retorno: Retorna o campo error vazio se der certo.
     ]
 /*------------------------------------------------------------------------------------------------*/
 
