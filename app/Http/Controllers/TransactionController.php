@@ -16,7 +16,7 @@ class TransactionController extends Controller{
         $transactions = Transaction::
             where('userId', $request->id)
             ->orderBy('id', 'DESC')
-        ->simplePaginate(2);
+        ->simplePaginate(30);
 
         $array['transactions'] = $transactions;
         return $array;

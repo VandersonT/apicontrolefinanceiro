@@ -78,6 +78,19 @@ class UserController extends Controller{
         $registerUser->save();
 
         //Envia o email ao usuário com o link para a rota /confirmAccount passando $registerUser->id como parametro
+        /*
+        $to = $email;
+        $subject = "Confirmação de email";
+        $body = "Tudo bom, ".$name."? Estou aqui para confirmar com você a sua conta no nosso sitema 'Controle Financeiro.'"."\r\n".
+            "Para confirmar a conta basta clicar no link abaixo:"."\r\n".
+            "link: ".url('/confirmAccount')."/".$registerUser->id."\r\n".
+            "Se você não reconhece esta ação, basta ignorar este email";
+        $header = "From: suporte@projetox.ga"."\r\n".
+                    "Reply-To: ".$email."\r\n".
+                    "X-Mailer: PHP/".phpversion();
+
+        mail($to, $subject, $body, $header);
+        */
 
         $array['success'] = 'Usuário registrado com successo;';
         $array['token'] = $token;
