@@ -81,23 +81,25 @@ class UserController extends Controller{
             $registerUser->access = 0;
             $registerUser->password = $hash;
             $registerUser->token = $token;
-            $registerUser->avatar = 'http://127.0.0.1:8000/media/no-picture.png';
+            $registerUser->avatar = url('/').'/media/no-picture.png';
         $registerUser->save();
 
-        //Envia o email ao usuário com o link para a rota /confirmAccount passando $registerUser->id como parametro
-        /*
+        //Send email to confirm account
         $to = $email;
-        $subject = "Confirmação de email";
-        $body = "Tudo bom, ".$name."? Estou aqui para confirmar com você a sua conta no nosso sitema 'Controle Financeiro.'"."\r\n".
-            "Para confirmar a conta basta clicar no link abaixo:"."\r\n".
-            "link: ".url('/confirmAccount')."/".$registerUser->id."\r\n".
-            "Se você não reconhece esta ação, basta ignorar este email";
-        $header = "From: suporte@projetox.ga"."\r\n".
-                    "Reply-To: ".$email."\r\n".
-                    "X-Mailer: PHP/".phpversion();
 
+        $subject = 'Confirmação de Conta';
+
+        $body = 'Opa, tudo bom? Estamos a um passo de confirmar a sua conta no nosso sistema "Controle Financeiro."'."\r\n".
+                'Para concluir a ação e ter acesso 100% a todas as funcionalidades basta clicar no link abaixo.'."\r\n".
+                'Link: '.url('/').'/api/confirmAccount/'.$registerUser->id."\r\n".
+                'Se não reconhece essa ação, basta ignorar este email.';
+
+        $header = "From: suporte@apicontrolefinanceiro.ga"."\r\n".
+                "Reply-To: suporte@apicontrolefinanceiro.ga"."\r\n".
+                "X-Mailer: PHP/".phpversion();
+    
         mail($to, $subject, $body, $header);
-        */
+        /***/
 
         $array['success'] = 'Usuário registrado com successo;';
         $array['token'] = $token;
@@ -105,6 +107,8 @@ class UserController extends Controller{
     }
 
     public function confirmAccount(Request $request){
+        echo 'teste';
+        return 'oi';
         $array = ['error' => ''];
 
         $accountToConfirm = User::find($request->id);
@@ -119,7 +123,7 @@ class UserController extends Controller{
 
         $accountToConfirm->save();
 
-        return Redirect::to('https://www.seuSite.com/contaAtiva');
+        return Redirect::to('https://controlefinanceiro-delta.vercel.app/contaAtiva');
     }
 
     public function loginAction(Request $request){
