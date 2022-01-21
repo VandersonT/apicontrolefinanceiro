@@ -54,6 +54,11 @@ class UserController extends Controller{
             $array['error'] = 'Não envie campos vazios';
             return $array;
         }
+
+        if(strlen($name) > 15){
+            $array['error'] = 'O nome só pode conter até 15 caracteres.';
+            return $array;
+        }
         
         if(!$email){
             $array['error'] = 'O Email enviado não é valido';
@@ -166,6 +171,11 @@ class UserController extends Controller{
             $array['error'] = 'Envie o id da conta que quer editar.';
             return $array; 
         }
+
+        if(strlen($name) > 15){
+            $array['error'] = 'O nome só pode conter até 15 caracteres.';
+            return $array;
+        }
         
         $user = User::find($userId);
 
@@ -187,9 +197,12 @@ class UserController extends Controller{
                     return $array; 
                 }
 
-                $user->email = $email;
-                $changedSomething = true;
-                $user->access = 0;
+                if($email != $user->email){
+                    $user->email = $email;
+                    $user->access = 0;
+                    $changedSomething = true;
+                }
+                
             }
 
             if($theme){
